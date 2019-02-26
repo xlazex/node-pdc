@@ -1,7 +1,7 @@
 {
-  "name": "pdc",
+  "name": "@rogov.tech/pdc",
   "description": "a pandoc wrapper for node",
-  "author": "Paul Vorbach <paul@vorba.ch> (http://paul.vorba.ch/)",
+  "author": "",
   "tags": [
     "pandoc",
     "markdown"
@@ -9,10 +9,10 @@
   "version": "0.2.3",
   "repository": {
     "type": "git",
-    "url": "git://github.com/pvorb/node-pdc.git"
+    "url": "git://github.com/xlazex/node-pdc.git"
   },
   "bugs": {
-    "url": "https://github.com/pvorb/node-pdc/issues"
+    "url": "https://github.com/xlazex/node-pdc/issues"
   },
   "main": "./pdc.js",
   "engines": {
@@ -26,5 +26,10 @@
   ],
   "dependencies": {},
   "devDependencies": {},
-  "optionalDependencies": {}
+  "optionalDependencies": {},
+  "homepage": "https://github.com/xlazex/node-pdc#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC"
 }
