@@ -38,7 +38,7 @@ function pdc(src, from, to, args, opts, cb) {
     pandoc = pdcStream(from, to, args, opts);
   }
 
-  var result = '';
+  var result = [];
   var error = '';
 
   // listen on error
@@ -48,7 +48,7 @@ function pdc(src, from, to, args, opts, cb) {
 
   // collect result data
   pandoc.stdout.on('data', function (data) {
-    result += data;
+    result.push(Buffer.from(data));
   });
 
   // collect error data
@@ -67,7 +67,7 @@ function pdc(src, from, to, args, opts, cb) {
     if (msg)
       return cb(new Error(msg));
 
-    cb(null, result);
+    cb(null, Buffer.concat(result));
   });
 
   // finally, send source string
