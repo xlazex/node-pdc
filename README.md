@@ -18,7 +18,7 @@ your own, customized path to the executable by assigning an absolute path to
 ## Usage
 
 ### Markdown to HTML
-> pandoc outputs all to stdout by default (excuded: docx, pdf, and some documented formats)
+> pandoc outputs all to stdout by default (except: docx, pdf, and some documented formats)
 ~~~ js
 const promisify = require('util').promisify
 const pdc = promisify(require('@rogov.tech/pdc'))
