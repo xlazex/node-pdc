@@ -1,81 +1,81 @@
-var spawn = require('child_process').spawn;
+const spawn = require('child_process').spawn
 
-module.exports = pdc;
+module.exports = pdc
 
 // pdcStream(from, to, [args,] [opts])
 function pdcStream(from, to, args, opts) {
-  var defaultArgs = [ '-f', from, '-t', to ];
+  var defaultArgs = [ '-f', from, '-t', to ]
 
   // sanitize arguments
   // no args, no opts
   if (arguments.length == 2) {
-    args = defaultArgs;
+    args = defaultArgs
   } else {
     // concatenate arguments
-    args = defaultArgs.concat(args);
+    args = defaultArgs.concat(args)
   }
 
   // start pandoc (with or without options)
   var pandoc;
   if (typeof opts == 'undefined')
-    pandoc = spawn(pdc.path, args);
+    pandoc = spawn(pdc.path, args)
   else
-    pandoc = spawn(pdc.path, args, opts);
+    pandoc = spawn(pdc.path, args, opts)
 
-  return pandoc;
+  return pandoc
 }
 
 // pdc(src, from, to, [args,] [opts,] cb)
 function pdc(src, from, to, args, opts, cb) {
-  var pandoc;
+  var pandoc
   if (arguments.length == 4) {
-    cb = args;
-    pandoc = pdcStream(from, to);
+    cb = args
+    pandoc = pdcStream(from, to)
   } else if (arguments.length == 5) {
-    cb = opts;
-    pandoc = pdcStream(from, to, args);
+    cb = opts
+    pandoc = pdcStream(from, to, args)
   } else {
-    pandoc = pdcStream(from, to, args, opts);
+    pandoc = pdcStream(from, to, args, opts)
   }
 
-  var result = [];
-  var error = '';
+  var result = []
+  var error = ''
 
   // listen on error
   pandoc.on('error', function (err) {
-    return cb(err);
-  });
+    return cb(err)
+  })
 
   // collect result data
   pandoc.stdout.on('data', function (data) {
-    result.push(Buffer.from(data));
-  });
+    result.push(Buffer.from(data))
+  })
 
   // collect error data
   pandoc.stderr.on('data', function (data) {
-    error += data;
-  });
+    error += data
+  })
 
   // listen on exit
   pandoc.on('close', function (code) {
-    var msg = '';
+    var msg = ''
     if (code !== 0)
-      msg += 'pandoc exited with code ' + code + (error ? ': ' : '.');
+      msg += 'pandoc exited with code ' + code + (error ? ': ' : '.')
     if (error)
-      msg += error;
+      msg += error
 
     if (msg)
-      return cb(new Error(msg));
+      return cb(new Error(msg))
 
-    cb(null, Buffer.concat(result));
-  });
+    cb(null, Buffer.concat(result))
+  })
 
   // finally, send source string
-  pandoc.stdin.end(src, 'utf8');
+  pandoc.stdin.end(src, 'utf8')
 }
 
 // export stream version
-pdc.stream = pdcStream;
+pdc.stream = pdcStream
 
 // name of or path to pandoc executable
-pdc.path = 'pandoc';
+pdc.path = 'pandoc'

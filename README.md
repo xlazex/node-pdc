@@ -1,11 +1,13 @@
 # pdc
 
-a pandoc wrapper for node.js
+> A pandoc wrapper for Node.js
 
 ## Installation
 
 ~~~
-npm install pdc
+npm install -s pdc
+or
+yarn add pdc
 ~~~
 
 This package requires [pandoc](http://johnmacfarlane.net/pandoc/) to be
@@ -15,19 +17,18 @@ your own, customized path to the executable by assigning an absolute path to
 
 ## Usage
 
+### Markdown to HTML
+> pandoc outputs all to stdout by default (excuded: docx, pdf, and some documented formats)
 ~~~ js
-var pdc = require('pdc');
+const promisify = require('util').promisify
+const pdc = promisify(require('@rogov.tech/pdc'))
 
-// optional, if pandoc is not in PATH
-var path = require('path');
-pdc.path = path.resolve(process.env.HOME, '.cabal/bin/pandoc');
-
-pdc('# Heading', 'markdown', 'html', function(err, result) {
-  if (err)
-    throw err;
-
-  console.log(result);
-});
+try {
+  const result = await pdc('# Heading', 'markdown', 'html') //Buffer
+  console.log(result.toString()) //String
+} catch (error) {
+  console.error(error)
+}
 ~~~
 
 This will print:
@@ -35,6 +36,22 @@ This will print:
 ~~~ html
 <h1 id="heading">Heading</h1>
 ~~~
+
+
+### HTML to DOCX
+> make pandoc write docx buffer to stdout use this flag --output=-
+~~~ js
+const promisify = require('util').promisify
+const pdc = promisify(require('@rogov.tech/pdc'))
+
+try {
+  const result = await pdc('<p>Hello docx</p>', 'html', 'docx', '--output=-') //Buffer
+  //..some operations with file buffer
+} catch (error) {
+  console.error(error)
+}
+~~~
+
 
 ## API
 
@@ -87,7 +104,7 @@ streams, that's the way to go.
 ## Bugs and Issues
 
 If you encounter any bugs or issues, feel free to open an issue at
-[github](https://github.com/pvorb/node-pdc/issues).
+[github](https://github.com/irogov/node-pdc/issues).
 
 ## Credits
 
